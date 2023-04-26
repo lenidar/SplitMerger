@@ -27,7 +27,10 @@ namespace CSV_Demo
             foreach(string sample in samples)
             {
                 temp = sample.Split(',');
-                Console.WriteLine(temp.Length);
+                foreach (string t in temp)
+                    Console.Write(t + "--");
+                Console.WriteLine();
+                //Console.WriteLine(temp.Length);
                 songID = int.Parse(temp[0]);
                 things = new List<string>();
 
@@ -68,7 +71,7 @@ namespace CSV_Demo
                 }
                 dSample[songID] = things;
             }
-
+            Console.WriteLine("\n\n");
             foreach(KeyValuePair<int, List<string>> kvp in dSample) 
             {
                 Console.Write(kvp.Key + "--");
