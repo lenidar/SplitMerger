@@ -18,13 +18,10 @@ namespace CSV_Demo
             string[] temp = new string[] { };
             string mergeThing = "";
 
-            samples.Add("1028,Roy Orbison,\"Oh, Pretty Woman\",1964"); // correct
-            samples.Add("1117,\"Gary \"\"U.S.\"\" Bonds\",Quarter to Three,1961"); // correct
-            samples.Add("1323,Big Joe Turner,\"Shake, Rattle and Roll\",1954"); // correct
-            samples.Add("859,\"Crosby, Stills, Nash (& Young)\",Ohio,1970"); // correct
-            samples.Add("1619,\"Clarence \"\"Frogman\"\" Henry\",Ain't Got No Home,1956"); // correct
+            samples.Add("8214,The Rolling Stones,\"2,000 Light Years from Home\",1967"); // correct
+            samples.Add("11250,\"Jones-Smith, Incorporated [Count Basie]\",\"Oh, Lady Be Good\",1936"); // correct
 
-            foreach(string sample in samples)
+            foreach (string sample in samples)
             {
                 temp = sample.Split(',');
                 foreach (string t in temp)
@@ -46,16 +43,33 @@ namespace CSV_Demo
                     mergeThing = "";
                     for (int x = 1; x < temp.Length; x++)
                     {
-                        // this is the scenario I chose
-                        // what I saw, if the thing is split, the merged thing will start 
-                        // with a ' ' or a '"'
-                        if (temp[x][0] == ' ' || temp[x][0] == '"')
+                        if (temp[x][0] == '"')
                         {
-                            // this combines all the things that need to be merged
-                            // the if statement would just add a ','
                             if (mergeThing.Length > 0)
-                                mergeThing += ",";
+                            {
+                                things.Add(mergeThing);
+                                mergeThing = "";
+                            }
                             mergeThing += temp[x];
+                        }
+                        else if (temp[x][0] == ' ')
+                        {
+                            if (mergeThing.Length > 0)
+                            {
+                                mergeThing += ",";
+                            }
+                            mergeThing += temp[x];
+                        }
+                        else if ((int)temp[x][0] >= 48 && (int)temp[x][0] <= 57)
+                        {
+                            if (mergeThing.Length > 0)
+                            {
+                                mergeThing += ",";
+                                mergeThing += temp[x];
+                            }
+                            else
+                                things.Add(temp[x]);
+
                         }
                         else
                         {
@@ -67,6 +81,14 @@ namespace CSV_Demo
 
                             things.Add(temp[x]);
                         }
+
+                        if (temp[x][temp[x].Length - 1] == '"')
+                            if (mergeThing.Length > 0)
+                            {
+                                things.Add(mergeThing);
+                                mergeThing = "";
+                            }
+
                     }
                 }
                 dSample[songID] = things;
